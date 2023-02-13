@@ -1,10 +1,11 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { response } from 'express';
 import asyncHandler from 'express-async-handler';
 dotenv.config()
 
 const unsplash = axios.create({
-    baseURL: 'https://api.unsplash.com/',
+    baseURL: 'http://api.unsplash.com/',
     headers: { 'Authorization': `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}` }
 });
 
@@ -25,8 +26,13 @@ const getUserPhotos = asyncHandler(async (req, res) => {
         res.status(200).json(userPhotos);
     }
     catch (e) {
-        console.log(e.response);
-        res.status(e.response.status).json({ message: e.response.statusText })
+        if (e.response) {
+            // The client was given an error response (5xx, 4xx)
+            res.status(e.response.status).json({ message: e.response.statusText })
+
+        } else {
+            res.status(500).json({ message: 'Server error. Please try again later' })
+        }
     }
 })
 
@@ -39,7 +45,6 @@ const getPhoto = asyncHandler(async (req, res) => {
         res.status(200).json(data);
     }
     catch (e) {
-        console.log(e.message)
         res.status(500).json({ message: 'Server error. Please try again later.' })
     }
 })
@@ -54,13 +59,9 @@ const getPhotos = asyncHandler(async (req, res) => {
         res.status(200).json(raw_urls);
     }
     catch (e) {
-        console.log(e.message)
+        console.log(e.response)
         res.status(500).json({ message: 'Server error. Please try again later.' })
     }
 })
 
-
-
-
 export { getUserPhotos, getPhoto, getPhotos };
-

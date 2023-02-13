@@ -45,13 +45,13 @@ const editPhotoDesc = asyncHandler(async (req, res) => {
 
     const photo = await FavoritePhoto.findById(req.params.id)
     if (!photo) {
-        res.status(400)
+        res.status(404)
         throw new Error('photo not found')
     }
 
     if (photo.user.toString() !== req.user.id) {
-        res.status(401)
-        throw new Error('user not authorized')
+        res.status(403)
+        throw new Error('user not authorized to delete this photo')
     }
 
     if (!req.body.description) {
@@ -64,4 +64,3 @@ const editPhotoDesc = asyncHandler(async (req, res) => {
 })
 
 export { addPhoto, getAllPhotosByUser, removeAPhoto, editPhotoDesc };
-

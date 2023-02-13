@@ -12,7 +12,7 @@ const register = asyncHandler(async (req, res) => {
     }
     const userExists = await User.findOne({ email })
     if (userExists) {
-        res.status(400)
+        res.status(409)
         throw new Error('user already exists')
     }
 
@@ -31,7 +31,7 @@ const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email })
     if (!user) {
-        res.status(400)
+        res.status(404)
         throw new Error('no such email registered')
     }
 
