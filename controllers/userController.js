@@ -5,33 +5,38 @@ import User from '../models/userModel.js';
 
 const register = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
+    if (!username && !email && !password) {
+        res.status(400)
+        throw new Error('Request body is missing')
+
+    }
     const userExists = await User.findOne({ email })
     if (userExists) {
-        res.status(400).json({ message: 'Email already exists.' })
+        res.status(400)
+        throw new Error('user already exists')
     }
+
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
-
     const user = await User.create({
         username, email, password: hashedPassword
     })
 
-    if (user) {
-        const { id, name, email } = user;
-        res.status(201).json({
-            _id: id, name, email
-        })
-    }
-    else {
-        res.status(400).json({ message: 'user not created' })
-    }
+    res.status(201).json({
+        id: user.id, username, email
+    })
 })
 
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email })
+    if (!user) {
+        res.status(400)
+        throw new Error('no such email registered')
+    }
+
     const { id } = user;
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (await bcrypt.compare(password, user.password)) {
         res.status(200).json({
             token: jwt.sign({ id }, process.env.JWT_SECRET, {
                 expiresIn: '30d',
@@ -39,7 +44,8 @@ const login = asyncHandler(async (req, res) => {
         })
     }
     else {
-        res.status(400).json({ message: 'auth arror' })
+        res.status(401)
+        throw new Error('wrong password, not authorized')
     }
 })
 

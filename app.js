@@ -2,6 +2,8 @@
 import dotenv from 'dotenv';
 import express from "express";
 import { connectDB } from './config/db.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { favoritePhotosRouter } from "./routes/favoritePhotosRouter.js";
 import { photosRouter } from "./routes/photoRoutes.js";
 import { usersRouter } from "./routes/userRoutes.js";
 dotenv.config()
@@ -15,6 +17,8 @@ app.use(express.json())
 
 app.use('/api/photos', photosRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/favorites', favoritePhotosRouter)
+app.use(errorHandler)
 
 app.use('/', (req, res) => {
     res.status(200).json({ 'message': 'Welcome to the Unsplash API!' })
