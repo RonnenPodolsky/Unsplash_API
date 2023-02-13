@@ -26,13 +26,7 @@ const getUserPhotos = asyncHandler(async (req, res) => {
         res.status(200).json(userPhotos);
     }
     catch (e) {
-        if (e.response) {
-            // The client was given an error response (5xx, 4xx)
-            res.status(e.response.status).json({ message: e.response.statusText })
-
-        } else {
-            res.status(500).json({ message: 'Server error. Please try again later' })
-        }
+        res.status(e.response?.status || 500).json({ message: e.response?.statusText || 'Server error. Please try again later' })
     }
 })
 
@@ -45,7 +39,7 @@ const getPhoto = asyncHandler(async (req, res) => {
         res.status(200).json(data);
     }
     catch (e) {
-        res.status(500).json({ message: 'Server error. Please try again later.' })
+        res.status(e.response?.status || 500).json({ message: e.response?.statusText || 'Server error. Please try again later' })
     }
 })
 
@@ -53,14 +47,13 @@ const getPhoto = asyncHandler(async (req, res) => {
 const getPhotos = asyncHandler(async (req, res) => {
     try {
         const response = await unsplash
-            .get('photos/')
+            .get('photos?per_page=25')
         const data = await response.data;
         const raw_urls = data.map(v => v.urls.raw)
         res.status(200).json(raw_urls);
     }
     catch (e) {
-        console.log(e.response)
-        res.status(500).json({ message: 'Server error. Please try again later.' })
+        res.status(e.response?.status || 500).json({ message: e.response?.statusText || 'Server error. Please try again later' })
     }
 })
 
