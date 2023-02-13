@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
 import asyncHandler from 'express-async-handler';
 import FavoritePhoto from '../models/favoritePhotoModel.js';
-dotenv.config()
 
 const getAllPhotosByUser = asyncHandler(async (req, res) => {
     const favoritePhotos = await FavoritePhoto.find({ user: req.user._id })

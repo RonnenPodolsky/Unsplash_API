@@ -1,8 +1,6 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
 import express from "express";
 const router = express.Router();
-dotenv.config()
 
 import { getPhoto, getPhotos, getUserPhotos } from '../controllers/photoController.js';
 

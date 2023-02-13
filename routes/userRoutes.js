@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
 import express from "express";
 import { protect } from '../middleware/authMiddleware.js';
 const router = express.Router();
-dotenv.config()
 
 import { getMe, login, register } from '../controllers/userController.js';
 
