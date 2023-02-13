@@ -1,23 +1,25 @@
 # Unsplash backend api
 
-## Masterschool
+## Routes
 
-- Type some Markdown on the left
-- See HTML in the right
-- ✨Magic ✨
+- /api/photos
+- /api/users
+- /api/favorites
 
 ## Features
 
-- Import a HTML file and watch it magically convert to Markdown
-- Drag and drop images (requires your Dropbox account be linked)
-- Import and save files from GitHub, Dropbox, Google Drive and One Drive
-- Drag and drop markdown and HTML files into Dillinger
-- Export documents as Markdown, HTML and PDF
+- photos - unsplash api:
+  - get('/:id') -> get photo details by id
+  - get('/user/:username') -> get photos by user
+  - get('/') -> get array of photo urls
+- users - JWT Auth:
 
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
+  - post('/register') -> provide username email and password
+  - post('/login') -> provide email and password, get JWT
+  - get('/me') -> provide JWT as Auth Bearer Token and get username, email, id in DB
+
+- favorites - DB, only with JWT provided as Auth Bearer Token:
+  - get('/') -> get all photos saved by user
+  - post('/add') -> add a photo to user's favs
+  - delete('/:id') -> delete a photo from user's favs
+  - put('/:id') -> change a photo's description in user's favs

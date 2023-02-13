@@ -4,7 +4,7 @@ import express from "express";
 const router = express.Router();
 dotenv.config()
 
-import { getPhoto, getPhotos, getUserPhotos } from '../controllers/photosController.js';
+import { getPhoto, getPhotos, getUserPhotos } from '../controllers/photoController.js';
 
 
 // router.route('/').get(protect, getGoals).post(protect, setGoals)

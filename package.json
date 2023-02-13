@@ -1,8 +1,8 @@
 {
-  "name": "unsplash_api",
+  "name": "unsplash-be-solution",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node run app.js",
     "server": "nodemon run app.js"

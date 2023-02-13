@@ -1,5 +1,5 @@
 import express from "express";
-import { addPhoto, editPhotoDesc, getAllPhotosByUser, removeAPhoto } from '../controllers/favoritePhotosController.js';
+import { addPhoto, editPhotoDesc, getAllPhotosByUser, removeAPhoto } from '../controllers/favoritesController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -9,4 +9,4 @@ router.delete('/:id', protect, removeAPhoto)
 router.put('/:id', protect, editPhotoDesc)
 router.get('/', protect, getAllPhotosByUser)
 
-export { router as favoritePhotosRouter };
+export { router as favoriteRouter };

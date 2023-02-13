@@ -24,9 +24,9 @@ const getUserPhotos = asyncHandler(async (req, res) => {
         })
         res.status(200).json(userPhotos);
     }
-    catch (error) {
-        console.log(error.response);
-        res.status(error.response.status).json({ message: error.response.statusText })
+    catch (e) {
+        console.log(e.response);
+        res.status(e.response.status).json({ message: e.response.statusText })
     }
 })
 

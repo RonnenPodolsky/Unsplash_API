@@ -46,7 +46,6 @@ const editPhotoDesc = asyncHandler(async (req, res) => {
     }
 
     const photo = await FavoritePhoto.findById(req.params.id)
-    console.log(photo)
     if (!photo) {
         res.status(400)
         throw new Error('photo not found')
