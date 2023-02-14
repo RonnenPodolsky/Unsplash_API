@@ -2,10 +2,11 @@ export const errorHandler = (err, req, res, next) => {
   let status = res.statusCode ?? 500;
   if (status == 200) status = 500;
 
-  const { message, stack } = err;
+  let { message, stack } = err;
 
   if (message?.includes('invalid signature')) {
     status = 401;
+    message = 'invalid jwt signature'
   }
   // erro thrown by Mongoose Model and can't set status
   if (message?.includes('validation failed')) {

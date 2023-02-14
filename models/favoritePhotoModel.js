@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 const favoritePhotoSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -17,8 +18,6 @@ const favoritePhotoSchema = mongoose.Schema({
         type: String,
         required: [true, 'please add a username']
     }
-}, {
-    timestamps: true
-})
+}, { timestamps: true })
 
 export default mongoose.model('FavoritePhoto', favoritePhotoSchema);

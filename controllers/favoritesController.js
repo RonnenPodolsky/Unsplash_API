@@ -53,18 +53,20 @@ const addPhoto = asyncHandler(async (req, res) => {
 
 const editPhotoDesc = asyncHandler(async (req, res) => {
     isInvalidId(req.params.id, res)
-    const photo = await FavoritePhoto.findById(req.params.id)
 
+    const photo = await FavoritePhoto.findById(req.params.id)
     isPhotoExists(photo, res)
     isUserAccessingOwnPhoto(photo, req.user._id, res)
     isDescriptionSpecified(req.body.description, res)
-
-    const updatedPhotoDesc = await FavoritePhoto.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    
+    const { description } = req.body
+    const updatedPhotoDesc = await FavoritePhoto.findByIdAndUpdate(req.params.id, { description }, { new: true })
     res.status(200).json(updatedPhotoDesc)
 })
 
-const removeAPhoto = asyncHandler(async (req, res) => {
+const removeFavPhoto = asyncHandler(async (req, res) => {
     isInvalidId(req.params.id, res)
+
     const photo = await FavoritePhoto.findById(req.params.id)
     isPhotoExists(photo, res)
     isUserAccessingOwnPhoto(photo, req.user._id, res)
@@ -74,4 +76,4 @@ const removeAPhoto = asyncHandler(async (req, res) => {
 })
 
 
-export { addPhoto, getAllPhotosByUser, removeAPhoto, editPhotoDesc };
+export { addPhoto, getAllPhotosByUser, removeFavPhoto, editPhotoDesc };
