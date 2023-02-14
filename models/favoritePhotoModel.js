@@ -15,7 +15,7 @@ const favoritePhotoSchema = mongoose.Schema({
     },
     username: {
         type: String,
-        required: [true, 'please add a text value']
+        required: [true, 'please add a username']
     }
 }, {
     timestamps: true
