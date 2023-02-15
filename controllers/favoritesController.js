@@ -7,6 +7,7 @@ const isInvalidId = (id, res) => {
         throw new Error('invalid photo id')
     }
 }
+
 const isPhotoExists = (photo, res) => {
     if (!photo) {
         res.status(404)
@@ -28,6 +29,13 @@ const isDescriptionSpecified = (description, res) => {
     }
 }
 
+const isBodyMissing = ({ username, url, description }, res) => {
+    if (!username && !url && !description) {
+        res.status(400)
+        throw new Error('Request body is missing, add description, url and username')
+    }
+}
+
 const getAllPhotosByUser = asyncHandler(async (req, res) => {
     const favoritePhotos = await FavoritePhoto.find({ user: req.user._id })
     res.status(200).json({ favoritePhotos })
@@ -35,17 +43,13 @@ const getAllPhotosByUser = asyncHandler(async (req, res) => {
 
 const addPhoto = asyncHandler(async (req, res) => {
     const { description, url, username } = req.body
-
-    if (!description && !url && !username) {
-        res.status(400)
-        throw new Error("Request body desc, url and username are all missing");
-    }
+    isBodyMissing({ description, url, username }, res)
 
     const newFavoritePhoto = await FavoritePhoto.create({
         user: req.user._id,
-        url: req.body.url,
-        description: req.body.description,
-        username: req.body.username
+        url,
+        description,
+        username,
     });
 
     res.status(201).json(newFavoritePhoto);
@@ -53,12 +57,12 @@ const addPhoto = asyncHandler(async (req, res) => {
 
 const editPhotoDesc = asyncHandler(async (req, res) => {
     isInvalidId(req.params.id, res)
+    isDescriptionSpecified(req.body.description, res)
 
     const photo = await FavoritePhoto.findById(req.params.id)
     isPhotoExists(photo, res)
     isUserAccessingOwnPhoto(photo, req.user._id, res)
-    isDescriptionSpecified(req.body.description, res)
-    
+
     const { description } = req.body
     const updatedPhotoDesc = await FavoritePhoto.findByIdAndUpdate(req.params.id, { description }, { new: true })
     res.status(200).json(updatedPhotoDesc)

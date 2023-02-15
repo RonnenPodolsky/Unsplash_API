@@ -10,7 +10,8 @@ export const errorHandler = (err, req, res, next) => {
   }
   // erro thrown by Mongoose Model and can't set status
   if (message?.includes('validation failed')) {
-    status = 500;
+    status = 400;
+    message = `${Object.values(err.errors)}`
   }
 
   res.status(status).json({
