@@ -5,7 +5,7 @@ import User from '../models/userModel.js';
 const { hash, compare, genSalt } = bcrypt
 
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' })
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' })
 }
 
 const isBodyMissing = ({ username, password, email }, res) => {
@@ -22,6 +22,7 @@ const isPasswordMissing = (password, res) => {
     }
 }
 
+
 const register = asyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
     isBodyMissing({ username, email, password }, res)
@@ -36,7 +37,6 @@ const register = asyncHandler(async (req, res) => {
     const salt = await genSalt(10)
     const hashedPassword = await hash(password, salt)
     const user = await User.create({ username, email, password: hashedPassword })
-
     res.status(201).json({ id: user.id, username, email })
 })
 

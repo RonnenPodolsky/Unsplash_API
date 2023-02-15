@@ -8,6 +8,12 @@ export const errorHandler = (err, req, res, next) => {
     status = 401;
     message = 'invalid jwt signature'
   }
+
+  if (message?.includes('jwt expired')) {
+    status = 401;
+    message = 'jwt expired'
+  }
+
   // erro thrown by Mongoose Model and can't set status
   if (message?.includes('validation failed')) {
     status = 400;
