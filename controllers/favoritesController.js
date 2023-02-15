@@ -1,7 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import FavoritePhoto from '../models/favoritePhotoModel.js';
 
-
 const isPhotoExists = (photo, res) => {
     if (!photo) {
         res.status(404)
@@ -61,6 +60,5 @@ const removeFavPhoto = asyncHandler(async (req, res) => {
     await photo.remove()
     res.status(200).json({ id: req.params.id })
 })
-
 
 export { addPhoto, getAllPhotosByUser, removeFavPhoto, editPhotoDesc };
