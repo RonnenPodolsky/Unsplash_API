@@ -25,7 +25,7 @@ const verifyToken = (token, res) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, userId) => {
         if (err) {
             res.status(401)
-            throw new Error(err.message == 'jwt expired' || 'invalid token')
+            throw new Error(err.message == 'jwt expired' ? err.message : 'invalid token')
         }
         else {
             id = userId.id
