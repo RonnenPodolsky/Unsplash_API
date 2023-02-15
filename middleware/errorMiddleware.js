@@ -13,7 +13,7 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   if (err instanceof mongoose.Error.CastError) {
-    status = 404;
+    status = 400;
     message = 'invalid photo id'
   }
 

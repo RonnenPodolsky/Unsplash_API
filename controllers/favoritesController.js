@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import FavoritePhoto from '../models/favoritePhotoModel.js';
 
+
 const isPhotoExists = (photo, res) => {
     if (!photo) {
         res.status(404)
