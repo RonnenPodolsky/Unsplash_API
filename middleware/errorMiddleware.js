@@ -3,11 +3,7 @@ export const errorHandler = (err, req, res, next) => {
   if (status == 200) status = 500;
 
   let { message, stack } = err;
-
-  if (message?.includes('invalid signature')) {
-    status = 401;
-    message = 'invalid jwt signature'
-  }
+  if (status == 500) message = 'unexpected server error';
 
   if (message?.includes('jwt expired')) {
     status = 401;
@@ -19,6 +15,7 @@ export const errorHandler = (err, req, res, next) => {
     status = 400;
     message = `${Object.values(err.errors)}`
   }
+
 
   res.status(status).json({
     message,
