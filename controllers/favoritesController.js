@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import FavoritePhoto from '../models/favoritePhotoModel.js';
 
 const isInvalidId = (id, res) => {
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) { // 24 characters of 0-9 or a-f or A-F
         res.status(400)
         throw new Error('invalid photo id')
     }
