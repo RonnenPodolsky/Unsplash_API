@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 export const errorHandler = (err, req, res, next) => {
   let status = res.statusCode ?? 500;
   if (status == 200) status = 500;
@@ -5,10 +7,14 @@ export const errorHandler = (err, req, res, next) => {
   let { message, stack } = err;
   if (status == 500) message = 'Server error. Please try again later.';
 
-  // erro thrown by Mongoose Model and can't set status
-  if (message?.includes('validation failed')) {
+  if (err instanceof mongoose.Error.ValidationError) {
     status = 400;
     message = `${Object.values(err.errors)}`
+  }
+
+  if (err instanceof mongoose.Error.CastError) {
+    status = 404;
+    message = 'invalid photo id'
   }
 
   res.status(status).json({

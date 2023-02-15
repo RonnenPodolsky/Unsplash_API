@@ -1,13 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import FavoritePhoto from '../models/favoritePhotoModel.js';
 
-const isInvalidId = (id, res) => {
-    if (!id.match(/^[0-9a-fA-F]{24}$/)) { // 24 characters of 0-9 or a-f or A-F
-        res.status(400)
-        throw new Error('invalid photo id')
-    }
-}
-
 const isPhotoExists = (photo, res) => {
     if (!photo) {
         res.status(404)
@@ -48,7 +41,6 @@ const addPhoto = asyncHandler(async (req, res) => {
 });
 
 const editPhotoDesc = asyncHandler(async (req, res) => {
-    isInvalidId(req.params.id, res)
     isDescriptionSpecified(req.body.description, res)
 
     const photo = await FavoritePhoto.findById(req.params.id)
@@ -61,8 +53,6 @@ const editPhotoDesc = asyncHandler(async (req, res) => {
 })
 
 const removeFavPhoto = asyncHandler(async (req, res) => {
-    isInvalidId(req.params.id, res)
-
     const photo = await FavoritePhoto.findById(req.params.id)
     isPhotoExists(photo, res)
     isUserAccessingOwnPhoto(photo, req.user._id, res)
