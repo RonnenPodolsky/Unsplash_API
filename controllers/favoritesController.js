@@ -29,13 +29,6 @@ const isDescriptionSpecified = (description, res) => {
     }
 }
 
-const isBodyMissing = ({ username, url, description }, res) => {
-    if (!username && !url && !description) {
-        res.status(400)
-        throw new Error('Request body is missing, add description, url and username')
-    }
-}
-
 const getAllPhotosByUser = asyncHandler(async (req, res) => {
     const favoritePhotos = await FavoritePhoto.find({ user: req.user._id })
     res.status(200).json({ favoritePhotos })
@@ -43,7 +36,6 @@ const getAllPhotosByUser = asyncHandler(async (req, res) => {
 
 const addPhoto = asyncHandler(async (req, res) => {
     const { description, url, username } = req.body
-    isBodyMissing({ description, url, username }, res)
 
     const newFavoritePhoto = await FavoritePhoto.create({
         user: req.user._id,
