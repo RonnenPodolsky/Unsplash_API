@@ -21,6 +21,6 @@ export const protect = asyncHandler(async (req, res, next) => {
 
     if (!token) { // meaning authorization empty in body of request
         res.status(401)
-        throw new Error('not authorized, no token attached to request')
+        throw new Error('not authorized, no bearer token attached to request')
     }
 })
